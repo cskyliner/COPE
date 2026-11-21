@@ -1,0 +1,223 @@
+/root/COPE/cope/loss_.py:15: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  def forward(ctx, inputs, targets, features, momentum):
+/root/COPE/cope/loss_.py:25: FutureWarning: `torch.cuda.amp.custom_bwd(args...)` is deprecated. Please use `torch.amp.custom_bwd(args..., device_type='cuda')` instead.
+  def backward(ctx, grad_outputs):
+/root/COPE/cope/loss_.py:45: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  def forward(ctx, inputs, targets, features, momentum):
+/root/COPE/cope/loss_.py:55: FutureWarning: `torch.cuda.amp.custom_bwd(args...)` is deprecated. Please use `torch.amp.custom_bwd(args..., device_type='cuda')` instead.
+  def backward(ctx, grad_outputs):
+/root/COPE/.venv/lib/python3.10/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+2026-11-21 22:13:27,337 COPE INFO: Saving model in the path :/root/autodl-tmp/cope/eval-20261121/partial
+2026-11-21 22:13:27,337 COPE INFO: Namespace(config_file='configs/P_ReID/cope.yml', opts=['DATASETS.ROOT_DIR', './data', 'TEST.WEIGHT', './weights/cope_occreid_preid.pth', 'DATALOADER.NUM_WORKERS', '8', 'OUTPUT_DIR', '/root/autodl-tmp/cope/eval-20261121/partial'], local_rank=0)
+2026-11-21 22:13:27,338 COPE INFO: Loaded configuration file configs/P_ReID/cope.yml
+2026-11-21 22:13:27,338 COPE INFO:
+MODEL:
+  NAME: 'ViT-B-16'
+  STRIDE_SIZE: [16, 16]
+  #STRIDE_SIZE: [12, 12]
+  MEMORY_MOMENTUM: 0.2
+
+INPUT:
+  SIZE_TRAIN: [256, 128]
+  SIZE_TEST: [256, 128]
+  PROB: 0.5 # random horizontal flip
+  RE_PROB: 0.5 # random erasing
+  PADDING: 10
+  PIXEL_MEAN: [0.5, 0.5, 0.5]
+  PIXEL_STD: [0.5, 0.5, 0.5]
+
+DATALOADER:
+  NUM_INSTANCE: 4
+  NUM_WORKERS: 16
+
+SOLVER:
+  STAGE1:
+    IMS_PER_BATCH: 64
+    PRETRAINED_PATH: ''
+    OPTIMIZER_NAME: "Adam"
+    BASE_LR: 4e-2
+    WARMUP_LR_INIT: 1e-5
+    LR_MIN: 1e-6
+    WARMUP_METHOD: 'linear'
+    WEIGHT_DECAY:  1e-4
+    WEIGHT_DECAY_BIAS: 1e-4
+    MAX_EPOCHS: 60
+    CHECKPOINT_PERIOD: 60
+    LOG_PERIOD: 50
+    WARMUP_EPOCHS: 5
+
+  IMS_PER_BATCH: 64
+  OPTIMIZER_NAME: "SGD"
+  BASE_LR: 3.5e-4
+  WARMUP_METHOD: 'linear'
+  WARMUP_ITERS: 10
+  WARMUP_FACTOR: 0.1
+  WEIGHT_DECAY: 5.0e-4
+  MAX_EPOCHS: 100
+  CHECKPOINT_PERIOD: 100
+  LOG_PERIOD: 50
+  EVAL_PERIOD: 20
+
+  # Hyper-parameters
+  CONTEXT_NUM: 4
+  OCCLUSION_NUM: 20
+  USED_OCCLUSION_NUM: 2
+  K1: 200
+  K2: 5
+
+  STEPS: [0.3, 0.5, 0.7]
+  GAMMA: 0.1
+
+TEST:
+  EVAL: True
+  IMS_PER_BATCH: 256
+  RE_RANKING: False
+  WEIGHT: ''
+
+DATASETS:
+  NAMES: ('p_reid')
+  ROOT_DIR: ('/home/xxx/occluded/datasets')
+
+OUTPUT_DIR: './logs/partial_reid_cope'
+2026-11-21 22:13:27,338 COPE INFO: Running with config:
+DATALOADER:
+  NUM_INSTANCE: 4
+  NUM_WORKERS: 8
+  SAMPLER: softmax
+DATASETS:
+  ATTR_NUM: 30
+  ATTR_PATH:
+  NAMES: p_reid
+  ROOT_DIR: ./data
+INPUT:
+  PADDING: 10
+  PIXEL_MEAN: [0.5, 0.5, 0.5]
+  PIXEL_STD: [0.5, 0.5, 0.5]
+  PROB: 0.5
+  RE_PROB: 0.5
+  SIZE_TEST: [256, 128]
+  SIZE_TRAIN: [256, 128]
+MODEL:
+  ATT_DROP_RATE: 0.0
+  COS_LAYER: False
+  DEVICE: cuda
+  DEVICE_ID: 0
+  DIST_TRAIN: False
+  DROP_OUT: 0.0
+  DROP_PATH: 0.1
+  I2T_LOSS_WEIGHT: 1.0
+  ID_LOSS_TYPE: softmax
+  ID_LOSS_WEIGHT: 1.0
+  IF_LABELSMOOTH: on
+  IF_WITH_CENTER: no
+  LAST_STRIDE: 1
+  MEMORY_MOMENTUM: 0.2
+  METRIC_LOSS_TYPE: triplet
+  NAME: ViT-B-16
+  NECK: bnneck
+  NO_MARGIN: False
+  PCL_LOSS_WEIGHT: 1.0
+  POOLING: None
+  PRETRAIN_CHOICE: imagenet
+  PRETRAIN_PATH:
+  SIE_CAMERA: False
+  SIE_COE: 3.0
+  SIE_VIEW: False
+  STEM_CONV: False
+  STRIDE_SIZE: [16, 16]
+  TRANSFORMER_TYPE: None
+  TRIPLET_LOSS_WEIGHT: 1.0
+OUTPUT_DIR: /root/autodl-tmp/cope/eval-20261121/partial
+SOLVER:
+  BASE_LR: 0.00035
+  BIAS_LR_FACTOR: 1
+  CENTER_LOSS_WEIGHT: 0.0005
+  CENTER_LR: 0.5
+  CHECKPOINT_PERIOD: 100
+  CONTEXT_NUM: 4
+  COSINE_MARGIN: 0.5
+  COSINE_SCALE: 30
+  EVAL_PERIOD: 20
+  GAMMA: 0.1
+  IMS_PER_BATCH: 64
+  ITERS: 200
+  K1: 200
+  K2: 5
+  LARGE_FC_LR: False
+  LOG_PERIOD: 50
+  LR_MIN: 1.6e-05
+  MARGIN: 0.3
+  MAX_EPOCHS: 100
+  MOMENTUM: 0.9
+  OCCLUSION_NUM: 20
+  OPTIMIZER_NAME: SGD
+  SEED: 1234
+  STAGE1:
+    BASE_LR: 0.04
+    CHECKPOINT_PERIOD: 60
+    COSINE_MARGIN: 0.5
+    COSINE_SCALE: 30
+    EVAL_PERIOD: 10
+    IMS_PER_BATCH: 64
+    LOG_PERIOD: 50
+    LR_MIN: 1e-06
+    MAX_EPOCHS: 60
+    MOMENTUM: 0.9
+    OPTIMIZER_NAME: Adam
+    PRETRAINED_PATH:
+    WARMUP_EPOCHS: 5
+    WARMUP_FACTOR: 0.01
+    WARMUP_ITERS: 500
+    WARMUP_LR_INIT: 1e-05
+    WARMUP_METHOD: linear
+    WEIGHT_DECAY: 0.0001
+    WEIGHT_DECAY_BIAS: 0.0001
+  STEPS: (0.3, 0.5, 0.7)
+  USED_OCCLUSION_NUM: 2
+  WARMUP_EPOCHS: 5
+  WARMUP_FACTOR: 0.1
+  WARMUP_ITERS: 10
+  WARMUP_LR_INIT: 0.01
+  WARMUP_METHOD: linear
+  WEIGHT_DECAY: 0.0005
+  WEIGHT_DECAY_BIAS: 0.0005
+TEST:
+  DIST_MAT: dist_mat.npy
+  EVAL: True
+  FEAT_NORM: yes
+  IMS_PER_BATCH: 256
+  NECK_FEAT: after
+  RE_RANKING: False
+  USE_P_SCORE: True
+  WEIGHT: ./weights/cope_occreid_preid.pth
+/root/COPE/cope/model.py:223: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  param_dict = torch.load(trained_path)
+=> Market1501 loaded
+Dataset statistics:
+  ----------------------------------------
+  subset   | # ids | # images | # cameras
+  ----------------------------------------
+  train    |   751 |    12936 |         6
+  query    |    60 |      300 |         1
+  gallery  |    60 |      300 |         1
+  ----------------------------------------
+Resized position embedding: %s to %s torch.Size([197, 768]) torch.Size([129, 768])
+Position embedding resize to height:16 width: 8
+Freeze patch projection layer with shape torch.Size([768, 3, 16, 16])
+Loading pretrained model from ./weights/cope_occreid_preid.pth
+2026-11-21 22:13:30,608 COPE INFO: Enter inferencing
+/root/COPE/utils/metrics_PSS.py:10: UserWarning: This overload of addmm_ is deprecated:
+	addmm_(Number beta, Number alpha, Tensor mat1, Tensor mat2)
+Consider using one of the following signatures instead:
+	addmm_(Tensor mat1, Tensor mat2, *, Number beta = 1, Number alpha = 1) (Triggered internally at ../torch/csrc/utils/python_arg_parser.cpp:1642.)
+  dist_mat.addmm_(1, -2, qf, gf.t())
+The test feature is normalized
+=> Compute DistMat with Prompt Score
+=> Intermediate reference samples: 5, Candidate gallery samples : 200
+2026-11-21 22:13:32,372 COPE INFO: Validation P_socre Results
+2026-11-21 22:13:32,372 COPE INFO: mAP: 88.3%
+2026-11-21 22:13:32,372 COPE INFO: CMC curve, Rank-1  :88.0%
+2026-11-21 22:13:32,372 COPE INFO: CMC curve, Rank-5  :90.3%
+2026-11-21 22:13:32,372 COPE INFO: CMC curve, Rank-10 :94.0%
+2026-11-21 22:13:32,372 COPE INFO: Inference completed in 1.76 seconds
