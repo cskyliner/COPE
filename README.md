@@ -98,6 +98,15 @@ of Git. On AutoDL, the uv download cache can be placed on the data disk with
 
 📂 Create a `data` folder under the root directory. Download and unzip the datasets into it:
 
+For Market-1501, P-DukeMTMC-reID and Occluded-ReID image archives,
+`scripts/prepare_small_datasets.py` prepares the layouts used by the loaders
+and checks split counts. Run it with `--help` for options. Occluded-ReID's
+official nested occluded and whole-body images are flattened into query and
+gallery respectively; synthetic camera IDs 1 and 2 distinguish the two sets,
+as in BPBreID's evaluation protocol. These IDs are not original camera labels.
+Partial-REID's official `Partial-REID_Dataset` directory should be named
+`Partial_REID` under the data root. Training requires matching parsing masks.
+
 ### Occluded Datasets
 
 - [Occluded-Duke](https://github.com/lightas/Occluded-DukeMTMC-Dataset)
