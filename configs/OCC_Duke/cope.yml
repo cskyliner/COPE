@@ -58,10 +58,10 @@ TEST:
   EVAL: True
   IMS_PER_BATCH: 256
   RE_RANKING: False
-  WEIGHT: ''
+  WEIGHT: './weights/cope_occduke.pth'
 
 DATASETS:
   NAMES: ('occ_duke')
-  ROOT_DIR: ('/home/xxx/occluded/datasets')
+  ROOT_DIR: './data'
 
 OUTPUT_DIR: './logs/occ_duke_cope'

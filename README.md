@@ -154,6 +154,54 @@ MSMT17
 We provide all released models with a **stride size of 16** to support reproducibility and follow-up research.  
 🔗 Download links for **[trained weights](https://drive.google.com/drive/folders/1ekVtlmAv_3mkgQUIM9db6wqCrr0--rNB?usp=sharing)** are available in the model release section. Please refer to `configs/` for the corresponding configuration files.
 
+### Preparing Occluded-Duke
+
+The Occluded-Duke config uses `./data/Occluded_Duke` and
+`./weights/cope_occduke.pth`. On a training server, these directories can be
+symlinks to the data disk. Keep image archives, parsing labels, and model files
+on that server.
+
+Use the original DukeMTMC-reID image archive and the `train.list`, `query.list`,
+and `gallery.list` files from the
+[official Occluded-Duke repository](https://github.com/lightas/Occluded-DukeMTMC-Dataset/tree/master/Occluded_Duke).
+Download the Occluded-Duke parsing-label ZIP from
+[BPBreID's labels folder](https://drive.google.com/drive/folders/1DUSKdJxSB-CQ4TfiB2WYJeifOPKMq-a_).
+Then run:
+
+```bash
+uv run --locked python scripts/prepare_occ_duke.py \
+  --images-zip /path/to/DukeMTMC-reID.zip \
+  --masks-zip /path/to/Occluded_Duke_masks.zip \
+  --split-dir /path/to/official-split-lists \
+  --output data/Occluded_Duke \
+  --report results/data-preparation/occ_duke.json
+```
+
+The script verifies archive coverage before extraction, checks sample images
+and parsing arrays, and records split counts and SHA-256 hashes. It includes
+the gallery-to-query reassignment required by the official split. Images and
+mask arrays are written only to `--output`; the small JSON report can be kept
+with experiment results. Re-running extraction replaces matching output files.
+
+Download `cope_occduke.pth` from the COPE weights folder above. The model also
+needs the original OpenAI CLIP `ViT-B-16.pt`; it is cached automatically in
+`~/.cache/clip` on the first model load. That cache can also be symlinked to the
+data disk.
+
+### Reproduced verification
+
+The released checkpoint was evaluated with the procedure above on a prepared
+Occluded-Duke split. All 35,489 list entries (15,618 train / 2,210 query /
+17,661 gallery) had a matching image and parsing label:
+
+| Setting | Rank-1 | mAP |
+| --- | ---: | ---: |
+| `configs/OCC_Duke/cope.yml` (PSS) | 82.0 | 75.3 |
+
+Archive checksums and split statistics are recorded in
+`results/data-preparation/occ_duke.json`; the evaluation log is in
+`results/evaluation/occ_duke_eval.log`.
+
 ---
 
 ## Training

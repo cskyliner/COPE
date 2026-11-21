@@ -2,8 +2,9 @@
 logs
 .venv/
 .uv-cache/
-data/
-weights/
+data
+weights
+.cope-prep-tmp/
 *.pth
 *.pt
 *.ckpt
